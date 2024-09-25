@@ -9,43 +9,36 @@
 # Create Date:       2020/07/07
 # ==============================
  
-import time
 import os
 from PIL import ImageGrab
- 
-# 获取当前目录
-BASE_DIR = os.getcwd()
- 
- 
-# 截屏函数
-def screenshot():
-    local_tm = time.localtime(time.time())
-    # 格式化日期: 年月日
-    date_str = time.strftime("%Y%m%d", local_tm)
-    # 以日期建立文件夹
-    dir_name = "Screenshot_" + date_str
-    # dir_path = os.path.join(BASE_DIR, dir_name)
-    # 不存在这一天的文件夹, 则建立它
-    # if not os.path.exists(dir_path):
-        # os.mkdir(dir_path)
-    # 格式化时间: 年月日_时分秒
-    YMD_HMS_str = time.strftime("%Y%m%d_%H%M%S", local_tm)
-    # 文件保存为.jpg (也可以是png或者其他格式)
-    file_name = YMD_HMS_str + ".jpg"
-    # file_path = os.path.join(dir_path, file_name)
-    file_path = "~/Desktop/"
-    # 截屏, 抓取当前屏幕的快照，返回一个模式为"RGB"的图像
-    im = ImageGrab.grab((100, 100, 200, 300))
-    im.save(file_path)
-    # 输出已经保存的截图文件, 以及截图尺寸 (比如: 560, 1440)
-    print ("save: ", file_path, " size:", im.size)
- 
- 
-# 基于 Python Imaging Library(PIL) 的截屏实现
-if __name__ == '__main__':
-    print ("Now, Run Auto_Screenshot: ", BASE_DIR)
-    while True:
-        screenshot()
-        # 每隔60秒运行一次截屏
+import time
 
+class ScreenShoter:
+    def __init__(self):
+        self.BASE_DIR = os.getcwd() # 得到当前文件目录
+        self.dir_name = "screenshots" # 所有截图文件存放在一个名为screenshots的文件夹中
+        self.dir_path = os.path.join(self.BASE_DIR, self.dir_name) # 连接两个目录名成为新的目录名
+        self.left = 0 # 左上角的坐标和需要截图的大小
+        self.top = 0
+        self.width = 0
+        self.height = 0
 
+    
+    def get_shots(self, time):
+        cnt = 0
+        try:
+            while True:
+                if not os.path.exists(self.dir_path):
+                    os.mkdir(self.dir_path)
+                cnt += 1
+                # 使用imageGrab函数截取屏幕区域
+                screenshot = ImageGrab.grab((self.left, self.top, self.width, self.height))
+                # 保存截图到文件
+                file_name = str(cnt) + ".png"
+                file_path = os.path.join(self.dir_path, file_name)
+                screenshot.save(file_path)
+                print(f"截图已保存到'{file_path}'")
+                # 等待1秒
+                time.sleep(time)
+        except KeyboardInterrupt:
+            print("截图已停止")
