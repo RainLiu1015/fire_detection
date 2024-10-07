@@ -51,7 +51,7 @@ class ColorFinder:
                 print(f"着火区域坐标: ({x}, {y}), 宽: {w}, 高: {h}")
         else:
             # 如果没有找到相似颜色区域，输出消息
-            cv2.putText(self.cropped_image, "没有找到相似颜色区域", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255),2)
+            cv2.putText(self.cropped_image, "没有找到着火区域", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255),2)
 
         # 显示结果
         cv2.imshow('Cropped Image', self.cropped_image)
